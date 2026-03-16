@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasto - Discover the best food & drinks</title>
+    
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <!-- Hamburger for mobile -->
+                <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle mobile menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="logo" id="nav-logo">
+                    <h1>Feasto<span>.</span></h1>
+                </div>
+            </div>
+
+            <!-- Navbar Search (Hidden on Hero page, visible on scrolling/other pages) -->
+            <div class="nav-search hidden" id="nav-search-container">
+                <i class="fa-solid fa-location-dot location-icon"></i>
+                <input type="text" placeholder="Search for restaurant, cuisine or a dish..." id="nav-search-input">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+
+            <div class="nav-right" id="nav-menu">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <div class="cart-icon-wrapper" id="cart-toggle-btn">
+                    <button class="icon-btn" aria-label="Open Cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+                    <span class="cart-badge" id="cart-badge">0</span>
+                </div>
+                <button class="btn btn-text">Log in</button>
+                <button class="btn btn-primary">Sign up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Application Container -->
+    <main id="app-container">
+        
+        <!-- ==========================================
+             VIEW 1: HOME PAGE
+             ========================================== -->
+        <div id="view-home" class="view active">
+            <!-- Hero Section -->
+            <header class="hero">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h1 class="hero-logo">Feasto</h1>
+                    <p class="hero-subtitle">Discover the best food & drinks in your city</p>
+                    
+                    <div class="hero-search-box">
+                        <div class="location-selector">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <label for="location-select" class="sr-only">Select City</label>
+                            <select id="location-select" title="Select City">
+                                <option value="nagpur">Nagpur</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="delhi">Delhi NCR</option>
+                                <option value="bengaluru">Bengaluru</option>
+                            </select>
+                        </div>
+                        <div class="search-divider"></div>
+                        <div class="search-input-container">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="hero-search-input" placeholder="Search for restaurant, cuisine or a dish">
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Popular Categories -->
+            <section class="section container">
+                <h2 class="section-title">Inspiration for your first order</h2>
+                <div class="categories-grid" id="categories-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Collections Section -->
+            <section class="section container bg-light">
+                <div class="section-header">
+                    <h2 class="section-title">Collections</h2>
+                    <p class="section-subtitle">Explore curated lists of top restaurants, cafes, pubs, and bars, based on trends.</p>
+                </div>
+                <div class="collections-grid" id="collections-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Featured Restaurants -->
+            <section class="section container">
+                <h2 class="section-title">Featured Restaurants</h2>
+                <div class="restaurant-grid" id="featured-restaurants-grid">
+                    <!-- Populated by JS (Skeletons shown initially) -->
+                </div>
+            </section>
+
+            <!-- Popular Localities -->
+            <section class="section container">
+                <h2 class="section-title">Popular localities in and around</h2>
+                <div class="localities-grid" id="localities-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ==========================================
+             VIEW 2: RESTAURANT LISTING & SEARCH
+             ========================================== -->
+        <div id="view-listing" class="view hidden container">
+            <div class="listing-header">
+                <h1 class="page-title" id="listing-title">Delivery Restaurants</h1>
+                <div class="breadcrumbs">
+                    <span class="breadcrumb-link home-link">Home</span> / <span class="breadcrumb-current">Restaurants</span>
+                </div>
+            </div>
+
+            <!-- Filters & Sorting -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="rating">Rating: 4.0+</button>
+                    <button class="filter-btn" data-filter="veg">Pure Veg</button>
+                    <button class="filter-btn" data-filter="nonveg">Non-Veg</button>
+                    <button class="filter-btn" data-filter="fast">Fast Delivery</button>
+                    <button class="filter-btn" data-filter="promoted">Promoted</button>
+                    <button class="filter-btn" data-filter="cheap">Under ₹300</button>
+                </div>
+                <div class="sort-group">
+                    <label for="sort-select"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort by:</label>
+                    <select id="sort-select">
+                        <option value="relevance">Relevance</option>
+                        <option value="rating">Rating: High to Low</option>
+                        <option value="time">Delivery Time</option>
+                        <option value="cost-low">Cost: Low to High</option>
+                        <option value="cost-high">Cost: High to Low</option>
+                        <option value="popularity">Popularity</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Search Results Grid -->
+            <div class="restaurant-grid" id="listing-grid">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Empty State for Search -->
+            <div class="empty-state hidden" id="empty-search-state">
+                <img src="https://illustrations.popsy.co/amber/falling.svg" alt="No results" class="empty-img">
+                <h3>Oops! No matches found</h3>
+                <p>We couldn't find any restaurants matching your criteria.</p>
+                <button class="btn btn-primary" id="clear-filters-btn">Clear Filters</button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             VIEW 3: RESTAURANT DETAILS
+             ========================================== -->
+        <div id="view-details" class="view hidden container">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs mt-2">
+                <span class="breadcrumb-link home-link">Home</span> / 
+                <span class="breadcrumb-link listing-link">Mumbai</span> / 
+                <span class="breadcrumb-current" id="detail-breadcrumb-name">Restaurant Name</span>
+            </div>
+
+            <!-- Restaurant Banner Gallery -->
+            <div class="restaurant-gallery" id="restaurant-banner">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Restaurant Info Header -->
+            <div class="restaurant-info-header">
+                <div class="info-left">
+                    <h1 id="detail-name">Restaurant Name</h1>
+                    <p class="detail-cuisine" id="detail-cuisine">Cuisine types</p>
+                    <p class="detail-location" id="detail-address">Location address</p>
+                    <div class="detail-timing">
+                        <span class="status open">Open now</span>
+                        <span class="dot-separator">•</span>
+                        <span>10am – 11pm (Today)</span>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <div class="rating-block">
+                        <div class="rating-badge green" id="detail-rating">
+                            <span>4.5</span>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="rating-text">Delivery Reviews</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" id="btn-favorite">
+                            <i class="fa-regular fa-heart"></i> Favorite
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Section -->
+            <div class="menu-layout">
+                <!-- Menu Sidebar (Categories) -->
+                <aside class="menu-sidebar">
+                    <h3>Menu</h3>
+                    <ul class="menu-categories" id="menu-categories">
+                        <!-- Populated by JS -->
+                    </ul>
+                </aside>
+
+                <!-- Menu Items Container -->
+                <div class="menu-content">
+                    <div class="menu-filters">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="veg-only-toggle" title="Filter vegetarian items">
+                            <span class="slider round veg-slider"></span>
+                        </label>
+                        <label for="veg-only-toggle" class="toggle-label">Veg Only</label>
+                    </div>
+
+                    <div id="menu-items-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================
+         CART SIDEBAR
+         ========================================== -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-btn" id="close-cart-btn" aria-label="Close cart">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="cart-body">
+            <!-- Empty Cart State -->
+            <div class="empty-state" id="empty-cart-state">
+                <img src="https://illustrations.popsy.co/amber/grocery-cart.svg" alt="Empty Cart" class="empty-img">
+                <h3>Good food is always cooking</h3>
+                <p>Your cart is empty. Add something from the menu.</p>
+                <button class="btn btn-primary close-cart-link">Browse Restaurants</button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div class="cart-items-container" id="cart-items-container">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Cart Footer / Checkout -->
+        <div class="cart-footer hidden" id="cart-footer">
+            <div class="bill-details">
+                <div class="bill-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">₹0</span>
+                </div>
+                <div class="bill-row">
+                    <span>Delivery Fee</span>
+                    <span id="cart-delivery">₹40</span>
+                </div>
+                <div class="bill-row">
+                    <span>Taxes & Charges</span>
+                    <span id="cart-taxes">₹0</span>
+                </div>
+                <div class="bill-divider"></div>
+                <div class="bill-row total-row">
+                    <span>To Pay</span>
+                    <span id="cart-total">₹0</span>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-checkout" id="checkout-btn">
+                Proceed to Checkout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h2>Feasto<span>.</span></h2>
+                    <div class="language-country-selectors">
+                        <label for="country-select" class="sr-only">Select Country</label>
+                        <select id="country-select" title="Select Country"><option>India</option><option>UAE</option></select>
+                        <label for="language-select" class="sr-only">Select Language</label>
+                        <select id="language-select" title="Select Language"><option>English</option><option>Hindi</option></select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>About Feasto</h4>
+                    <ul>
+                        <li><a href="#">Who We Are</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Work With Us</a></li>
+                        <li><a href="#">Investor Relations</a></li>
+                        <li><a href="#">Report Fraud</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>FeastoVerse</h4>
+                    <ul>
+                        <li><a href="#">Feasto</a></li>
+                        <li><a href="#">Blinkit</a></li>
+                        <li><a href="#">Feeding India</a></li>
+                        <li><a href="#">Hyperpure</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>For Restaurants</h4>
+                    <ul>
+                        <li><a href="#">Partner With Us</a></li>
+                        <li><a href="#">Apps For You</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Learn More</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Social Links</h4>
+                    <div class="social-icons">
+                        <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+                    <div class="app-links mt-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="app-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" class="app-badge">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. © 2026 Feasto™ Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
